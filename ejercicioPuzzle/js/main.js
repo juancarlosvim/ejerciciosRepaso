@@ -6,10 +6,12 @@
 
  */
 let debug = true;
+let intercambio = [];
 let iniciar = () =>{
     'use strict';
     colocarImagen();
     trabajarImagen();
+    getElementosArray();
 };
 
 /*
@@ -75,10 +77,27 @@ let colocarImagen = () =>{
     }
     for(let i=0;i<tamFotos;i++){
         let crearImg = document.createElement("img");
+        crearImg.setAttribute('id', "imagen"+i);
         crearImg.setAttribute('src', ruta+arrayFotos[numerosAleatoriosFotos[i]]);
         crearDivFotos.appendChild(crearImg);
     }
     cogerBody.appendChild(crearDivFotos);
+};
+/*
+    funcion que devuelve un array con los elementos del array
+ */
+
+let getElementosArray = () =>{
+    'use strict';
+    let cogerImagenes = [];
+    let tamArray = document.getElementsByTagName("img").length;
+    for(let i =0;i<tamArray;i++){
+        cogerImagenes[i] =  document.getElementsByTagName("img")[i];
+    }
+    if(debug){
+        console.log(cogerImagenes);
+    }
+    return cogerImagenes;
 };
 
 /*
@@ -92,14 +111,40 @@ let trabajarImagen = () =>{
     }
     for(let i=0;i<cogerImagenes.length;i++){
         cogerImagenes[i].addEventListener("click", imagenPulsada);
-    }
-};
 
+    }
+
+};
+/*
+ funcion cuando pulsamos click
+ */
 let imagenPulsada = (e) =>{
     'use strict';
+    let arrayOriginal = getElementosArray();
+    let ruta = e.target;
+    let posiciones = [];
+
+    intercambio.push(ruta);
     if(debug){
-        console.log(e.target);
+        console.log(arrayOriginal);
+        console.log(intercambio);
     }
+    if(intercambio.length===2){
+        for(let i=0;i<arrayOriginal.length;i++){
+            if(arrayOriginal[i]=== intercambio[0]){
+               posiciones.push(i);
+            }else if(arrayOriginal[i] === intercambio[1]){
+                posiciones.push(i);
+            }
+        }
+        /*
+            obtenemos un array con las posicones de las fotos
+         */
+        console.log(posiciones);
+        intercambio = [];
+        console.log(intercambio);
+    }
+
 };
 
 window.addEventListener("DOMContentLoaded", iniciar);
