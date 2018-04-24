@@ -120,7 +120,6 @@ let trabajarImagen = () =>{
  */
 let imagenPulsada = (e) =>{
     'use strict';
-    let arrayOriginal = getElementosArray();
     let posiciones = [];
     let rutaDestino;
     let rutaInterc;
@@ -131,13 +130,6 @@ let imagenPulsada = (e) =>{
     }else{
         rutaDestino = e.target.id;
         console.log("rutaDestino", rutaDestino);
-        /*console.log("rutaDestino", rutaDestino);
-        rutaInterc = rutaDestino;
-        console.log("rutaInter", rutaInterc);
-        rutaDestino=ruta;
-        console.log("rutaDestino", rutaDestino);
-        ruta = rutaInterc;
-        console.log("ruta", ruta);*/
         intercambiarFotos(ruta, rutaDestino);
         ruta= "";
     }
