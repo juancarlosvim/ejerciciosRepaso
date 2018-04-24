@@ -7,6 +7,7 @@
  */
 let debug = true;
 let intercambio = [];
+let ruta = "";
 let iniciar = () =>{
     'use strict';
     colocarImagen();
@@ -68,14 +69,13 @@ let colocarImagen = () =>{
     let cogerBody = document.getElementsByTagName("body")[0];
     let crearDivFotos = document.createElement("div");
     crearDivFotos.setAttribute('id', "fotosPuzzle");
-    let tamFotos = crearFotos().length;
     let arrayFotos = crearFotos();
     let numerosAleatoriosFotos = numerosAleatorios(arrayFotos);
     if(debug){
         console.log(arrayFotos);
         console.log(numerosAleatoriosFotos);
     }
-    for(let i=0;i<tamFotos;i++){
+    for(let i=0;i<arrayFotos.length;i++){
         let crearImg = document.createElement("img");
         crearImg.setAttribute('id', "imagen"+i);
         crearImg.setAttribute('src', ruta+arrayFotos[numerosAleatoriosFotos[i]]);
@@ -90,9 +90,9 @@ let colocarImagen = () =>{
 let getElementosArray = () =>{
     'use strict';
     let cogerImagenes = [];
-    let tamArray = document.getElementsByTagName("img").length;
+    let tamArray = document.querySelectorAll("#fotosPuzzle>img").length;
     for(let i =0;i<tamArray;i++){
-        cogerImagenes[i] =  document.getElementsByTagName("img")[i];
+        cogerImagenes[i] =  document.querySelectorAll("#fotosPuzzle>img")[i];
     }
     if(debug){
         console.log(cogerImagenes);
@@ -121,30 +121,54 @@ let trabajarImagen = () =>{
 let imagenPulsada = (e) =>{
     'use strict';
     let arrayOriginal = getElementosArray();
-    let ruta = e.target;
     let posiciones = [];
-
-    intercambio.push(ruta);
-    if(debug){
-        console.log(arrayOriginal);
-        console.log(intercambio);
-    }
-    if(intercambio.length===2){
-        for(let i=0;i<arrayOriginal.length;i++){
-            if(arrayOriginal[i]=== intercambio[0]){
-               posiciones.push(i);
-            }else if(arrayOriginal[i] === intercambio[1]){
-                posiciones.push(i);
-            }
-        }
-        /*
-            obtenemos un array con las posicones de las fotos
-         */
-        console.log(posiciones);
-        intercambio = [];
-        console.log(intercambio);
+    let rutaDestino;
+    let rutaInterc;
+    //intercambio.push(ruta);
+    if(ruta.length === 0){
+        ruta = e.target.id;
+        console.log("ruta", ruta);
+    }else{
+        rutaDestino = e.target.id;
+        console.log("rutaDestino", rutaDestino);
+        /*console.log("rutaDestino", rutaDestino);
+        rutaInterc = rutaDestino;
+        console.log("rutaInter", rutaInterc);
+        rutaDestino=ruta;
+        console.log("rutaDestino", rutaDestino);
+        ruta = rutaInterc;
+        console.log("ruta", ruta);*/
+        intercambiarFotos(ruta, rutaDestino);
+        ruta= "";
     }
 
 };
+
+let intercambiarFotos = (param1, param2) =>{
+    let directorio = "img/";
+    let cogerImagenPrimera = document.getElementById(param1);
+    //let encontrarRuta = cogerImagenPrimera.lastIndexOf("/");
+    //mequedo con el nombre de la foto
+    let cogerRutaImagenP = cogerImagenPrimera.src.split(directorio)[1];
+    console.log(cogerRutaImagenP);
+    console.log("cogerImagenPrimera", cogerImagenPrimera);
+    let cogerImagenSegunda = document.getElementById(param2);
+    //me quedo con el nomre de la seguda foto
+    let cogerRutaImagenS = cogerImagenSegunda.src.split(directorio)[1];
+
+    console.log("cogerSegundaImagen", cogerImagenSegunda);
+    // guardo el nombre de la foto en una variable auxiliar
+    let cogerImagenAx = cogerRutaImagenP;
+    /*
+        realizando intercambio
+     */
+    cogerImagenPrimera.src = directorio+cogerRutaImagenS;
+    console.log("imagenPriemra", cogerImagenPrimera);
+    cogerImagenSegunda.src = directorio+cogerImagenAx;
+    console.log("imagenIntercambiada2", cogerImagenSegunda);
+
+};
+
+
 
 window.addEventListener("DOMContentLoaded", iniciar);
