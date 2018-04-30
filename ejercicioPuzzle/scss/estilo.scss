@@ -1,0 +1,28 @@
+//variables
+$ancho_div: 60%;
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body{
+  display: flex;
+  justify-content: space-between;
+}
+#fotosPuzzle{
+  //width: $ancho_div;
+  border: 1px solid black;
+  display: flex;
+  flex-wrap: wrap;
+  img{
+    box-sizing: border-box;
+    width: 25%;
+    padding: 1px;
+}
+}
+#fotoResuelta{
+  img{
+    width: 80%;
+    padding: 0.5em;
+  }
+}

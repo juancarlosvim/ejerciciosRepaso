@@ -6,13 +6,27 @@
 
  */
 let debug = true;
-let intercambio = [];
 let ruta = "";
+let arrayComprobacion = [];
+let comprobacion = false;
 let iniciar = () =>{
     'use strict';
     colocarImagen();
+    iniciarArrayComprobacion();
+    colocarImagenResuelta();
     trabajarImagen();
     getElementosArray();
+
+};
+
+//funcion que inicializa a false el tamaño de las fotos
+let iniciarArrayComprobacion = () =>{
+    'use strict';
+    let tamFotos = crearFotos();
+    for(let i =0;i<tamFotos.length;i++){
+        arrayComprobacion[i] = false;
+    }
+    return arrayComprobacion;
 };
 
 /*
@@ -39,7 +53,7 @@ let numerosAleatorios = (f) =>{
     let ar = [];
     for(let i=0;i<fotosArray.length;i++){
         do{
-            aleatorio = Math.floor(Math.random() * fotosArray.length)
+            aleatorio = Math.floor(Math.random() * fotosArray.length);
             //console.log(aleatorio);
         }while(noRepetidos(aleatorio, ar));
         ar.push(aleatorio);
@@ -77,11 +91,25 @@ let colocarImagen = () =>{
     }
     for(let i=0;i<arrayFotos.length;i++){
         let crearImg = document.createElement("img");
-        crearImg.setAttribute('id', "imagen"+i);
+        crearImg.setAttribute('id', `imagen${i}`);
         crearImg.setAttribute('src', ruta+arrayFotos[numerosAleatoriosFotos[i]]);
         crearDivFotos.appendChild(crearImg);
     }
     cogerBody.appendChild(crearDivFotos);
+
+};
+
+let colocarImagenResuelta = () =>{
+    'use strict';
+    let rutaImagenResuelta = "img/";
+    let nombreImagenResuelta = "auto0.jpg";
+    let cogerBody = document.getElementsByTagName("body")[0];
+    let crearDivFotoResuelta = document.createElement("div");
+    let crearImagenResuelta = document.createElement("img");
+    crearImagenResuelta.setAttribute("src", rutaImagenResuelta+nombreImagenResuelta);
+    crearDivFotoResuelta.appendChild(crearImagenResuelta);
+    cogerBody.appendChild(crearDivFotoResuelta);
+    crearDivFotoResuelta.setAttribute("id", "fotoResuelta");
 };
 /*
     funcion que devuelve un array con los elementos del array
@@ -120,20 +148,22 @@ let trabajarImagen = () =>{
  */
 let imagenPulsada = (e) =>{
     'use strict';
-    let posiciones = [];
     let rutaDestino;
-    let rutaInterc;
     //intercambio.push(ruta);
     if(ruta.length === 0){
         ruta = e.target.id;
-        console.log("ruta", ruta);
+        if(debug){
+            console.log("ruta", ruta);
+        }
     }else{
         rutaDestino = e.target.id;
-        console.log("rutaDestino", rutaDestino);
+        if(debug){
+            console.log("rutaDestino", rutaDestino);
+        }
         intercambiarFotos(ruta, rutaDestino);
         ruta= "";
     }
-
+    comprobarPuzzle();
 };
 
 let intercambiarFotos = (param1, param2) =>{
@@ -142,25 +172,93 @@ let intercambiarFotos = (param1, param2) =>{
     //let encontrarRuta = cogerImagenPrimera.lastIndexOf("/");
     //mequedo con el nombre de la foto
     let cogerRutaImagenP = cogerImagenPrimera.src.split(directorio)[1];
-    console.log(cogerRutaImagenP);
-    console.log("cogerImagenPrimera", cogerImagenPrimera);
+    if(debug){
+        console.log(cogerRutaImagenP);
+        console.log("cogerImagenPrimera", cogerImagenPrimera);
+    }
     let cogerImagenSegunda = document.getElementById(param2);
     //me quedo con el nomre de la seguda foto
     let cogerRutaImagenS = cogerImagenSegunda.src.split(directorio)[1];
-
-    console.log("cogerSegundaImagen", cogerImagenSegunda);
+    if(debug){
+        console.log("cogerSegundaImagen", cogerImagenSegunda);
+    }
     // guardo el nombre de la foto en una variable auxiliar
     let cogerImagenAx = cogerRutaImagenP;
     /*
         realizando intercambio
      */
     cogerImagenPrimera.src = directorio+cogerRutaImagenS;
-    console.log("imagenPriemra", cogerImagenPrimera);
+    if(debug){
+        console.log("imagenPriemra", cogerImagenPrimera);
+    }
     cogerImagenSegunda.src = directorio+cogerImagenAx;
-    console.log("imagenIntercambiada2", cogerImagenSegunda);
+    if(debug){
+        console.log("imagenIntercambiada2", cogerImagenSegunda);
+    }
+};
+
+let comprobarPuzzle = () =>{
+    'use strict';
+    let cogerFotos = document.querySelectorAll("#fotosPuzzle>img");
+    let fotosCreadas = crearFotos();
+    let arrayFotos = [];
+
+    for(let i=0;i<cogerFotos.length;i++){
+        arrayFotos[i] = cogerFotos[i].src.split("img/")[1];
+
+    }
+    if(debug){
+        console.log("fotosCreadas", fotosCreadas);
+        console.log("arrayFotos", arrayFotos);
+    }
+    for(let i=0;i<cogerFotos.length;i++){
+        if(fotosCreadas[i]===arrayFotos[i]){
+            arrayComprobacion[i] = true; // añadimos al arrayComprobacion
+
+        }
+    }
+    //console.log(encuentra);
+    if(debug){
+        console.log(arrayComprobacion);
+    }
+    // comprobar el array
+    for(let j=0;j<arrayComprobacion.length;j++) {
+        if (arrayComprobacion[j] === false) {
+            comprobacion = false;
+            break;
+        } else {
+            comprobacion = true;
+        }
+    }
+
+    // se comprueba esto ultimo
+    if(comprobacion === true) {
+        if(debug){
+            console.log("entro en comprobacion");
+        }
+        resueltoPuzzle();
+    }
 
 };
 
-
-
+let resueltoPuzzle = () =>{
+    'use strict';
+    let fotosPuzzle = document.getElementById("fotosPuzzle");
+    let  btnIniciar = document.createElement("button");
+    btnIniciar.setAttribute("id", "btnIniciar");
+    btnIniciar.innerHTML ="Jugar de nuevo";
+    fotosPuzzle.innerHTML = "";
+    let crearTexto = document.createElement("p");
+    crearTexto.textContent = "Puzzle finalizado";
+    fotosPuzzle.appendChild(crearTexto);
+    fotosPuzzle.appendChild(btnIniciar);
+    btnIniciar.addEventListener("click", refrescarPagina);
+};
+/*
+  función para recargar la página
+ */
+let refrescarPagina = () =>{
+    'use strict';
+    location.reload(true);
+};
 window.addEventListener("DOMContentLoaded", iniciar);
