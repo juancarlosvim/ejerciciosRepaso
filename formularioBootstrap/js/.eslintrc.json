@@ -1,0 +1,41 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+
+  "rules": {
+
+    "arrow-parens": "off",
+    "no-var": "warn",
+    "no-const-assign": "error",
+
+    "no-eval": "error",
+    "no-mixed-spaces-and-tabs": "warn",
+    "no-tabs": "warn",
+    "no-undef": "error",
+    "no-console": "off",
+    "no-cond-assign": "error",
+    "no-dupe-args": "error",
+    "no-extra-semi": "error",
+    "no-unused-vars":"warn",
+    "prefer-template":"warn",
+    "camelcase": "warn",
+    "use-isnan": "error",
+    "valid-typeof": "error",
+    "strict": "warn",
+    "curly": "error",
+    "eqeqeq": "warn",
+    "indent": ["warn", 4],
+    "semi": ["error", "always"],
+
+    "no-multiple-empty-lines": ["warn", {
+      "max": 1,
+      "maxEOF":1,
+      "maxBOF":1
+    }]
+
+
+  }
+}
