@@ -1,0 +1,10 @@
+//variables
+$color_clase_error: #a94442;
+$color_clase_correcto: #3c763d;
+
+.error{
+  border-color: $color_clase_error;
+}
+.correcto{
+  border-color: $color_clase_correcto;
+}
