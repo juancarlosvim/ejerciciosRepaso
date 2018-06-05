@@ -34,15 +34,46 @@ let comprobacion = (e) =>{
      */
     let cogerNodoNombre = document.getElementById("inptNombre");
     let cogerNodoNombreUsuario = document.getElementById("inptNombreUsuario");
+    let nodosComprobar = document.querySelectorAll("form>input");
     let claseCorrecto = "form-control correcto";
     let claseError = "form-control error";
     let expresionNombre = /^([A-ZÁÉÍÓÚ]{1}[a-zñáéíóú])\w+/g;
     let expresionNombreUsuario = /^([A-Za-z0-9]{4,20})\w+/g;
     let expresionEmail = /([\w]+@{1}[\w]+\.[a-z]{1,3})\w+/g;
-    let expresionTelefono = /^(6|9)\d{8}/g;
+    let expresionTelefono = /(^[0-9]{9})+/g;
     let expresionPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm; /* debe contener 8 caracteres, una letra myuscula, una letra minuscula y un numero, puede contener caracteres especiales */
-    comprobacionExpresiones(dato, expresionNombre, cogerNodoNombre, claseCorrecto, claseError, "nombre", "Juan Carlos, Pedro");
-    comprobacionExpresiones(dato, expresionNombreUsuario, cogerNodoNombreUsuario, claseCorrecto, claseError, "nombreUsuario", "juancarlosvim, juanc3 entre 4 y 20 caracteres");
+    let arrayExpresiones = [ expresionNombre, expresionNombreUsuario, expresionEmail, expresionTelefono, expresionPassword];
+    let datosCampos = {campoEjemplo: "nombre", ejemplo: "Juan Carlos",};
+    let campoEjemplo = ["nombre", "nombreUsuario", "correo", "teléfono móvil", "contraseña"];
+    let errorEjemplo = ["Juan Carlos, Pedro", "juancarlosvim, juancarlos3, entre 4 y 20 caracteres", "correo@gmail.com", "123456789", "la contraseña debe contener al menos 8 caracteres, letra mayuscula, letra minuscula, un número, también puede tener caracteres espciales"];
+    for(let i=0;i<nodosComprobar.length;i++){
+        if(nodosComprobar[i].value.length>0){
+            console.log("entro en el primer if");
+            if(arrayExpresiones[i].test(nodosComprobar[i].value)){
+                console.log("correcto");
+                nodosComprobar[i].className = claseCorrecto;
+            }else{
+                console.log("expresion", arrayExpresiones[i]);
+                console.log("valor de campo", nodosComprobar[i].value);
+                console.log("incorrecto");
+                nodosComprobar[i].className = claseError;
+                nodosComprobar[i].value = "";
+                nodosComprobar[i].placeholder = "Error al introducir "+campoEjemplo[i]+" Ejemplo: "+errorEjemplo[i];
+            }
+           //comprobacionExpresiones(nodosComprobar[i].value, arrayExpresiones[i], nodosComprobar[i], claseCorrecto, claseError, campoEjemplo[i], errorEjemplo[i] );
+        }
+    }
+    /*
+     TODO
+     array de expresiones regulares
+     nodo.value.lengt>0 entonces comprobar la expresioens
+     al aceptar los terminos comprobar que los campos obligatorios sean mayor que 0 y comprobar que no hay ninguna clase error entonces se activará el botón
+     */
+    /*comprobacionExpresiones(dato, expresionNombre, cogerNodoNombre, claseCorrecto, claseError, "nombre", "Juan Carlos, Pedro");
+    if(cogerNodoNombreUsuario.value.length>0){
+        comprobacionExpresiones(dato, expresionNombreUsuario, cogerNodoNombreUsuario, claseCorrecto, claseError, "nombreUsuario", "juancarlosvim, juanc3 entre 4 y 20 caracteres");
+    }*/
+
 };
 
 
