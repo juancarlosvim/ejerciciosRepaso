@@ -8,6 +8,7 @@ let iniciar = () =>{
     }
     comprobarCheckAficiones();
     comprobarSexo();
+    comprobarTerminos();
 };
 /*
     funcion que pone años en el select, recibe 3 parametros, uno para el año dónde queremos que empieze y otro hasta que terminne, y el último parametro el nodo que queremos colocar.
@@ -76,20 +77,6 @@ let comprobacion = (e) =>{
 
 };
 
-
-let comprobacionExpresiones = (valor, expresion, nodo, claseCorrecto, claseError, nombreCampoEjemplo,campoEjemplo) =>{
-    'use strict';
-    let cogerNodo = nodo;
-    if(expresion.test(valor)){
-        console.log("correcto");
-        cogerNodo.className = claseCorrecto;
-    }else{
-        console.log("error");
-        cogerNodo.className = claseError;
-        cogerNodo.value="";
-        cogerNodo.placeholder = "Error al introducir el "+nombreCampoEjemplo+" ejemplo: "+campoEjemplo;
-    }
-};
 let comprobarCheckAficiones = ()=>{
     'use strict';
     let cogerCheckAficiones = document.querySelectorAll(".aficiones>input");
@@ -119,12 +106,23 @@ let comprobarSexo = () =>{
 
 let comprobarTerminos = () =>{
     'use strict';
+    let nodosClaseError = document.querySelectorAll(".error");
+    let cogerBotonRegistrarse = document.getElementById("btnRegistrarse");
+    let camposObligatorios = document.querySelectorAll("#inptCorreo, #inptTelefono, #inptPassword");
     let cogerCheckTerminos = document.querySelector(".terminos>div>input");
-    if(cogerCheckTerminos.checked ===true){
-        /*
-            Comprobamos todos los campos obligatioros
-         */
-    }
+    let claseBoton = "btn btn-primary my-3";
+    cogerCheckTerminos.addEventListener("click", ()=>{
+        console.log("entrando eventlsiterner terminos");
+        if(cogerCheckTerminos.checked ===true && nodosClaseError.length===0){
+            for(let i=0;i<camposObligatorios.length;i++){
+                if(camposObligatorios[i].value.length>0){
+                    cogerBotonRegistrarse.className= claseBoton;
+                }
+            }
+
+        }
+    });
+
 };
 
 window.addEventListener("DOMContentLoaded", iniciar);
