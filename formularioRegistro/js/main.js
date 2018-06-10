@@ -1,6 +1,8 @@
 let iniciar = () =>{
     'use strict';
     let cogerSelect = document.getElementById("sFechaNacimento");
+    let btnRegistrarse = document.getElementById("btnRegistrarse");
+    btnRegistrarse.disabled=true;
     ponerFechas(1990, 2020, cogerSelect);
     let cogerInput = document.querySelectorAll("form>input");
     for(let i=0;i<cogerInput.length;i++){
@@ -8,7 +10,7 @@ let iniciar = () =>{
     }
     comprobarCheckAficiones();
     comprobarSexo();
-    comprobarTerminos();
+    //comprobarTerminos();
 };
 /*
     funcion que pone años en el select, recibe 3 parametros, uno para el año dónde queremos que empieze y otro hasta que terminne, y el último parametro el nodo que queremos colocar.
@@ -48,7 +50,7 @@ let comprobacion = (e) =>{
     let campoEjemplo = ["nombre", "nombreUsuario", "correo", "teléfono móvil", "contraseña"];
     let errorEjemplo = ["Juan Carlos, Pedro", "juancarlosvim, juancarlos3, entre 4 y 20 caracteres", "correo@gmail.com", "123456789", "la contraseña debe contener al menos 8 caracteres, letra mayuscula, letra minuscula, un número, también puede tener caracteres espciales"];
     for(let i=0;i<nodosComprobar.length;i++){
-        if(nodosComprobar[i].value.length>0){
+        if(nodosComprobar[i].value.length>0 && nodosComprobar[i].value.length !==0){
             console.log("entro en el primer if");
             if(arrayExpresiones[i].test(nodosComprobar[i].value)){
                 console.log("correcto");
@@ -64,6 +66,19 @@ let comprobacion = (e) =>{
            //comprobacionExpresiones(nodosComprobar[i].value, arrayExpresiones[i], nodosComprobar[i], claseCorrecto, claseError, campoEjemplo[i], errorEjemplo[i] );
         }
     }
+    let nodosClaseError = document.getElementsByClassName("error");
+    let cogerBotonRegistrarse = document.getElementById("btnRegistrarse");
+    let cogerCheckTerminos = document.querySelector(".terminos>div>input");
+    cogerCheckTerminos.addEventListener("click", ()=>{
+        console.log("entrando eventlsiterner terminos");
+        console.log("a", cogerCheckTerminos.checked);
+        console.log("b", nodosClaseError.length);
+        if(cogerCheckTerminos.checked ===true && nodosClaseError.length===0){
+            cogerBotonRegistrarse.disabled=false;
+        }else{
+            cogerBotonRegistrarse.disabled=true;
+        }
+    });
     /*
      TODO
      array de expresiones regulares
@@ -104,25 +119,23 @@ let comprobarSexo = () =>{
 
 };
 
-let comprobarTerminos = () =>{
+/*let comprobarTerminos = () =>{
     'use strict';
-    let nodosClaseError = document.querySelectorAll(".error");
+    let nodosClaseError = document.getElementsByClassName("error");
     let cogerBotonRegistrarse = document.getElementById("btnRegistrarse");
-    let camposObligatorios = document.querySelectorAll("#inptCorreo, #inptTelefono, #inptPassword");
+    cogerBotonRegistrarse.disabled=true;
     let cogerCheckTerminos = document.querySelector(".terminos>div>input");
-    let claseBoton = "btn btn-primary my-3";
     cogerCheckTerminos.addEventListener("click", ()=>{
         console.log("entrando eventlsiterner terminos");
+        console.log("a", cogerCheckTerminos.checked);
+        console.log("b", nodosClaseError.length);
         if(cogerCheckTerminos.checked ===true && nodosClaseError.length===0){
-            for(let i=0;i<camposObligatorios.length;i++){
-                if(camposObligatorios[i].value.length>0){
-                    cogerBotonRegistrarse.className= claseBoton;
-                }
-            }
-
+            cogerBotonRegistrarse.disabled=false;
+        }else{
+            cogerBotonRegistrarse.disabled=true;
         }
     });
 
 };
-
+*/
 window.addEventListener("DOMContentLoaded", iniciar);
